@@ -81,19 +81,19 @@ def main():
            print("Unable to calculate the distance to the obstacle.")
 
 # Moving of the robot based on the calculated distance
-        if distance < 0.004:
+        if distance < 0.4:
             cmd_vel_msg.linear.x = fastSpeed
             cmd_vel_msg.angular.z = zero
 
-        elif distance < 0.001:
+        elif distance < 0.190:
             cmd_vel_msg.linear.x = normalSpeed
             cmd_vel_msg.angular.z = zero
 
-        elif distance <= 0.0005:
+        elif distance <= 0.180:
             cmd_vel_msg.linear.x = slowSpeed
             cmd_vel_msg.angular.z = zero
 
-        elif distance <= 0.0002:
+        elif distance <= 0.170:
             cmd_vel_msg.linear.x = back
             cmd_vel_msg.angular.z = turnRight
             rospy.sleep(0.1)

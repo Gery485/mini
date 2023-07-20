@@ -109,8 +109,6 @@ def main():
                 numPos = random.choice(listePositiv)
                 cmd_vel_msg.linear.x = -0.15
                 cmd_vel_msg.angular.z = numPos
-                print(numPos)
-                print(numNeg)
         
 # Publish the message
         cmd_vel_pub.publish(cmd_vel_msg)

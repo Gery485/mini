@@ -75,10 +75,10 @@ def main():
         #value = cv2.waitKey(1)
 
         distance = calculate_distance_to_obstacle(depth_image)
-        if distance is not None:
-           print(f"Distance to obstacle: {distance} meters")
-        else:
-           print("Unable to calculate the distance to the obstacle.")
+        #if distance is not None:
+        #   print(f"Distance to obstacle: {distance} meters")
+        #else:
+        #   print("Unable to calculate the distance to the obstacle.")
 
 # Moving of the robot based on the calculated distance
         if distance < 0.4:

@@ -45,7 +45,7 @@ def depth_image_callback(msg):
 #returns inf, if there is no received image and filters
 def calculate_distance_to_obstacle():
     if depth_image is None:
-        return float('inf')
+        return float('no Image')
     center_x = depth_image.shape[1] // 2
     depth_values = depth_image[:, center_x]
     valid_depth_values = depth_values[depth_values > 0]
@@ -53,23 +53,23 @@ def calculate_distance_to_obstacle():
         closest_depth = min(valid_depth_values)
         return closest_depth * 0.001  # Convert to meters
     else:
-        return float('inf')
+        return float('big problems')
 
 #main-method
 def main():
     global depth_image
 
 # Subscriber
-    rospy.Subscriber('/minibot/camera/depth/image_rect_raw/compressed', Image, depth_image_callback)
-    rospy.wait_for_message('/minibot/camera/depth/image_raw', Image)
+    rospy.Subscriber('/minibot/camera/depth/image_rect_raw', Image, depth_image_callback)
+    rospy.wait_for_message('/minibot/camera/depth/image_rect_raw', Image)
 
 # Set the rate
     rate = rospy.Rate(10)
 
 #Image and settings for the movement
     while not rospy.is_shutdown():
-        cv2.imshow("Depth", depth_image / 2)
-        value = cv2.waitKey(1)
+        #cv2.imshow("Depth", depth_image / 2)
+        #value = cv2.waitKey(1)
 
         distance = calculate_distance_to_obstacle()
         print(distance)

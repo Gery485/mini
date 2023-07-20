@@ -43,17 +43,20 @@ def depth_image_callback(msg):
 
 #returns the value of the distanca between the camera and the closest obstacle in meters
 #returns inf, if there is no received image and filters
-def calculate_distance_to_obstacle():
+def calculate_distance_to_obstacle(depth_image):
     if depth_image is None:
-        return float('no Image')
+        raise ValueError("No depth image provided")
+    
     center_x = depth_image.shape[1] // 2
     depth_values = depth_image[:, center_x]
     valid_depth_values = depth_values[depth_values > 0]
+
     if len(valid_depth_values) > 0:
         closest_depth = min(valid_depth_values)
         return closest_depth * 0.001  # Convert to meters
     else:
-        return float('big problems')
+        return None  # Return None when no valid depth values are found
+
 
 #main-method
 def main():
@@ -71,8 +74,11 @@ def main():
         #cv2.imshow("Depth", depth_image / 2)
         #value = cv2.waitKey(1)
 
-        distance = calculate_distance_to_obstacle()
-        print(distance)
+        distance = calculate_distance_to_obstacle(depth_image)
+        if distance is not None:
+           print(f"Distance to obstacle: {distance} meters")
+        else:
+           print("Unable to calculate the distance to the obstacle.")
 
 # Moving of the robot based on the calculated distance
         if distance < 0.004:

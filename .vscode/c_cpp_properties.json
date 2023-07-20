@@ -1,0 +1,26 @@
+{
+  "configurations": [
+    {
+      "browse": {
+        "databaseFilename": "${default}",
+        "limitSymbolsToIncludedHeaders": false
+      },
+      "includePath": [
+        "/home/iis/catkin_ws/devel/include/**",
+        "/opt/ros/noetic/include/**",
+        "/home/iis/catkin_ws/src/ros-lynxmotion-lss-4dof/lss_4dof_arm_ikfast_plugin/include/**",
+        "/home/iis/catkin_ws/src/minibot/plugins/realsense_gazebo_plugin/include/**",
+        "/home/iis/catkin_ws/src/minibot/plugins/rviz_camera_stream/include/**",
+        "/home/iis/catkin_ws/src/ros-sphero-rvr/serial_lib/include/**",
+        "/home/iis/catkin_ws/src/turtlebot3/turtlebot3_slam/include/**",
+        "/usr/include/**"
+      ],
+      "name": "ROS",
+      "intelliSenseMode": "gcc-x64",
+      "compilerPath": "/usr/bin/gcc",
+      "cStandard": "gnu11",
+      "cppStandard": "c++14"
+    }
+  ],
+  "version": 4
+}

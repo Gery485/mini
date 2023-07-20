@@ -21,7 +21,9 @@ turnRight = 2.0
 turnLeft = -1.0
 turnRightt = 2
 
-liste = [-1, -0.75, -0.5, -0.25,  0.25, 0.5, 0.75, 1]
+listeNegativ = [-1, -0.75, -0.5, -0.25]
+listePositiv = [0.25, 0.5, 0.75, 1]
+liste = [-100 , 100]
 
 # Definitions for the publisher
 rospy.init_node('msgsForMoving')
@@ -33,6 +35,7 @@ depth_image = None
 #converts the image to a CV2 image format and received subscriber node
 def depth_image_callback(msg):
     global depth_image
+    print('Image received')
     try:
         depth_image = bridge.imgmsg_to_cv2(msg, "32FC1")
     except Exception as e:
@@ -57,7 +60,7 @@ def main():
     global depth_image
 
 # Subscriber
-    rospy.Subscriber('/minibot/camera/depth/image_raw', Image, depth_image_callback)
+    rospy.Subscriber('/minibot/camera/depth/image_rect_raw/compressed', Image, depth_image_callback)
     rospy.wait_for_message('/minibot/camera/depth/image_raw', Image)
 
 # Set the rate
@@ -90,10 +93,18 @@ def main():
             rospy.sleep(0.1)
 
         else:
-            num = random.choice(liste)
-            cmd_vel_msg.linear.x = -0.15
-            cmd_vel_msg.angular.z = num
-            print(num)
+            numNum = random.choice(liste)
+            if numNum < 0:
+               numNeg = random.choice(listeNegativ)
+               
+               cmd_vel_msg.linear.x = -0.15
+               cmd_vel_msg.angular.z = numNeg
+            else:
+                numPos = random.choice(listePositiv)
+                cmd_vel_msg.linear.x = -0.15
+                cmd_vel_msg.angular.z = numPos
+                print(numPos)
+                print(numNeg)
         
 # Publish the message
         cmd_vel_pub.publish(cmd_vel_msg)

@@ -17,8 +17,8 @@ slowSpeed = 0.1
 normalSpeed = 0.3
 fastSpeed = 0.5
 
-turnRight = 2.0
-turnLeft = -1.0
+turnRight = -2.0
+turnLeft = 1.0
 turnRightt = 2
 
 listeNegativ = [-1, -0.75, -0.5, -0.25]
@@ -75,10 +75,10 @@ def main():
         #value = cv2.waitKey(1)
 
         distance = calculate_distance_to_obstacle(depth_image)
-        #if distance is not None:
-        #    print(f"Distance to obstacle: {distance} meters")
-        #else:
-        #   print("Unable to calculate the distance to the obstacle.")
+        if distance is not None:
+            print(f"Distance to obstacle: {distance} meters")
+        else:
+           print("Unable to calculate the distance to the obstacle.")
 
 # Moving of the robot based on the calculated distance
         if distance < 0.230:

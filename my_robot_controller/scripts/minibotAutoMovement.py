@@ -81,22 +81,14 @@ def main():
            print("Unable to calculate the distance to the obstacle.")
 
 # Moving of the robot based on the calculated distance
-"""        if distance < 0.4:
-            cmd_vel_msg.linear.x = fastSpeed
-            cmd_vel_msg.angular.z = zero
+        if distance < 0.230:
+            cmd_vel_msg.linear.x = zero
+            cmd_vel_msg.angular.z = turnLeft
+            rospy.sleep(0.345)
 
         elif distance < 0.190:
-            cmd_vel_msg.linear.x = normalSpeed
-            cmd_vel_msg.angular.z = zero
-
-        elif distance <= 0.180:
-            cmd_vel_msg.linear.x = slowSpeed
-            cmd_vel_msg.angular.z = zero
-
-        elif distance <= 0.170:
             cmd_vel_msg.linear.x = back
-            cmd_vel_msg.angular.z = turnRight
-            rospy.sleep(0.1)
+            cmd_vel_msg.angular.z = zero
 
         else:
             numNum = random.choice(liste)
@@ -109,10 +101,10 @@ def main():
                 numPos = random.choice(listePositiv)
                 cmd_vel_msg.linear.x = -0.15
                 cmd_vel_msg.angular.z = numPos
-        """
+        
 # Publish the message
-     #   cmd_vel_pub.publish(cmd_vel_msg)
-     #   rate.sleep()
+        cmd_vel_pub.publish(cmd_vel_msg)
+        rate.sleep()
 
 if __name__ == '__main__':
     main()

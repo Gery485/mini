@@ -83,27 +83,28 @@ def main():
         else:
             print("Unable to calculate the distance to the obstacle.")
 
-        x = cmd_vel_msg.linear.x 
-        z = cmd_vel_msg.angular.z
-
         if distance is not None and distance_cm < 135:
-            x = point2
-            z = zero
-            rospy.sleep(sleep)
-            x = minPoint2
-            z = zero
-            rospy.sleep(sleep)
-            x = zero
-            z = point2
-            rospy.sleep(sleep)
+            cmd_vel_msg.linear.x = point2
+            cmd_vel_msg.angular.z = zero
+            cmd_vel_pub.publish(cmd_vel_msg)
+            rospy.sleep(0.2)
+            cmd_vel_msg.linear.x = minPoint2
+            cmd_vel_msg.angular.z = zero
+            cmd_vel_pub.publish(cmd_vel_msg)
+            rospy.sleep(0.2)
+            cmd_vel_msg.linear.x = zero
+            cmd_vel_msg.angular.z = point2
+            cmd_vel_pub.publish(cmd_vel_msg)
+            rospy.sleep(0.2)
         elif distance_cm < minDistance:
-            x = minPoint2
-            z = point2
+            cmd_vel_msg.linear.x = minPoint2
+            cmd_vel_msg.angular.z = point2
+            cmd_vel_pub.publish(cmd_vel_msg)
         else:
-            rospy.sleep(sleep)
-            x = zero
-            z = point2
-        rate.sleep()
+            cmd_vel_msg.linear.x = zero
+            cmd_vel_msg.angular.z = point2
+            cmd_vel_pub.publish(cmd_vel_msg)
+    rate.sleep()
 
 if __name__ == '__main__':
     main()

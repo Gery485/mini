@@ -75,7 +75,7 @@ def main():
         # Calculate the distance to the obstacle
         distance = calculate_distance_to_obstacle(depth_image, camera_info)
         if distance is not None:
-            distance_cm = distance * 100  # Convert distance to centimeters
+            distance_cm = distance/10  # Convert distance to centimeters
             print(f"Distance to obstacle: {distance_cm:.2f} cm")
         else:
             print("Unable to calculate the distance to the obstacle.")

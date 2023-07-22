@@ -87,9 +87,11 @@ def main():
             cmd_vel_msg.angular.z = 1
             cmd_vel_pub.publish(cmd_vel_msg)
             rospy.sleep(sleep)
+            continue
 
         if distance is not None and distance_cm < 135:
             print("it´s great")
+            continue
         elif distance is not None and distance_cm < 135:
             cmd_vel_msg.linear.x = point2
             cmd_vel_msg.angular.z = zero
@@ -106,20 +108,20 @@ def main():
             cmd_vel_pub.publish(cmd_vel_msg)
             print("3. half")
             rospy.sleep(sleep)
-
+            continue
         elif distance is not None and distance_cm < minDistance:
             cmd_vel_msg.linear.x = minPoint2
             cmd_vel_msg.angular.z = point2
             cmd_vel_pub.publish(cmd_vel_msg)
-
+            continue
         elif distance is None:
             cmd_vel_msg.linear.x = zero
             cmd_vel_msg.angular.z = point2
             cmd_vel_pub.publish(cmd_vel_msg)
-        
+            continue
         else:
             print("whaaaaat")
-            
+            continue
         rate.sleep()
 
 if __name__ == '__main__':

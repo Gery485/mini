@@ -35,7 +35,7 @@ depth_image = None
 #converts the image to a CV2 image format and received subscriber node
 def depth_image_callback(msg):
     global depth_image
-    print('Image received')
+    #print('Image received')
     try:
         depth_image = bridge.imgmsg_to_cv2(msg, "32FC1")
     except Exception as e:

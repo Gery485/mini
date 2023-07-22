@@ -53,7 +53,7 @@ def calculate_distance_to_obstacle(depth_image):
 
     if len(valid_depth_values) > 0:
         closest_depth = min(valid_depth_values)
-        return closest_depth * 0.001  # Convert to meters
+        return closest_depth  # Convert to meters
     else:
         return None  # Return None when no valid depth values are found
 

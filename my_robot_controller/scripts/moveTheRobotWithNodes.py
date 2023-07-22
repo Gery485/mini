@@ -8,8 +8,10 @@ from cv_bridge import CvBridge
 import cv2
 import random
 
-#variables
-# Add your variable definitions here, if any
+zero = 0
+point2 = 0.2
+minPoint2 = -0.2
+sleep = 0.2
 
 # Definitions for the publisher
 rospy.init_node('msgsForMoving')
@@ -80,9 +82,26 @@ def main():
         else:
             print("Unable to calculate the distance to the obstacle.")
 
-        # Add your robot movement control logic here based on the calculated distance
-        # ...
+        x = cmd_vel_msg.linear.x 
+        z = cmd_vel_msg.angular.z
 
+        if distance_cm is not None and distance_cm < 135:
+            x = point2
+            z = zero
+            rospy.sleep(sleep)
+            x = minPoint2
+            z = zero
+            rospy.sleep(sleep)
+            x = zero
+            z = point2
+            rospy.sleep(sleep)
+        elif distance_cm < 21:
+            x = minPoint2
+            z = point2
+        else:
+            rospy.sleep(sleep)
+            x = zero
+            z = point2
         rate.sleep()
 
 if __name__ == '__main__':

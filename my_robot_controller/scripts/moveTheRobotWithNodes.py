@@ -89,6 +89,8 @@ def main():
             rospy.sleep(sleep)
 
         if distance is not None and distance_cm < 135:
+            print("it´s great")
+        elif distance is not None and distance_cm < 135:
             cmd_vel_msg.linear.x = point2
             cmd_vel_msg.angular.z = zero
             cmd_vel_pub.publish(cmd_vel_msg)

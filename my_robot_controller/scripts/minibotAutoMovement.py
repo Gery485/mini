@@ -104,7 +104,8 @@ def main():
         
 # Publish the message
         #cmd_vel_pub.publish(cmd_vel_msg)
-        #rate.sleep()
+        rate.sleep()
+        rospy.sleep(0.1)
 
 if __name__ == '__main__':
     main()

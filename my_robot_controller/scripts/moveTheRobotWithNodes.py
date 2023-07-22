@@ -74,8 +74,9 @@ def main():
     while not rospy.is_shutdown():
         # Calculate the distance to the obstacle
         distance = calculate_distance_to_obstacle(depth_image, camera_info)
+        distance = distance / 10
         if distance is not None:
-            print(f"Distance to obstacle: {distance:.2f} meters")
+            print(f"Distance to obstacle: {distance:.2f} cm")
         else:
             print("Unable to calculate the distance to the obstacle.")
 

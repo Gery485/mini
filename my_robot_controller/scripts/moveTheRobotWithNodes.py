@@ -81,7 +81,7 @@ def main():
             distance_cm = distance/10  # Convert distance to centimeters
             print(f"Distance to obstacle: {distance_cm:.2f} cm")
              # Movement control based on distance
-            if distance_cm < 135:
+"""            if distance_cm < 135:
             # Perform turning maneuvers
              cmd_vel_msg.linear.x = point2
              cmd_vel_msg.angular.z = zero
@@ -124,6 +124,6 @@ def main():
        
 
         rate.sleep()
-
+"""
 if __name__ == '__main__':
     main()

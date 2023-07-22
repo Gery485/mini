@@ -1,87 +1,87 @@
 #!/usr/bin/env python3
+
+#imports
 import rospy
 from geometry_msgs.msg import Twist
-from sensor_msgs.msg import LaserScan
+from sensor_msgs.msg import Image, CameraInfo
+from cv_bridge import CvBridge
+import cv2
+import random
 
-zero = 0
-normalSpeed = 0.3
-turnRight = 2.0
-turnLeft = -1.0
-back = -0.5
+#variables
+# Add your variable definitions here, if any
 
-# Definitions (grounding) also known as initialization
+# Definitions for the publisher
 rospy.init_node('msgsForMoving')
-cmd_vel_pub = rospy.Publisher('/cmd_vel', Twist, queue_size = 1)
+cmd_vel_pub = rospy.Publisher('/minibot/rvr/cmd_vel', Twist, queue_size=1)
 cmd_vel_msg = Twist()
-x = cmd_vel_msg.linear.x
-z = cmd_vel_msg.angular.z
+bridge = CvBridge()
+depth_image = None
+camera_info = None
 
-def laser_scan_callback(msg):
-    global x, z  # Access the global variables
+#converts the image to a CV2 image format and received subscriber node
+def depth_image_callback(msg):
+    global depth_image
+    #print('Image received')
+    try:
+        depth_image = bridge.imgmsg_to_cv2(msg, "32FC1")
+    except Exception as e:
+        print(e)
 
-    # Moving of the robot based on LaserScan data
-    distance_to_obstacle = msg.ranges[0]  # Access the first element for simplicity, adjust the index as needed
-    #print(type(distance_to_obstacle))
+def camera_info_callback(msg):
+    global camera_info
+    camera_info = msg
 
-    # Use distance_to_obstacle for your desired calculations or comparisons
-    # For example:
-    
-    #if distance_to_obstacle == inf:
-    #    print('the distance is to big!')
-    #else:
-    print('Distance of the obstacle is: ' + str(distance_to_obstacle))
-    rospy.sleep(0.1)
+#returns the value of the distance between the camera and the closest obstacle in meters
+#returns inf, if there is no received image and filters
+def calculate_distance_to_obstacle(depth_image, camera_info):
+    if depth_image is None or camera_info is None:
+        raise ValueError("No depth image or camera info provided")
 
-    
-    if distance_to_obstacle < 1.9:
-        slowSpeed = 0.1
-        turnRightt = 2
-        x = slowSpeed
-        z = turnRightt
+    # Camera intrinsic parameters
+    fx = camera_info.K[0]  # focal length in x-direction
+    fy = camera_info.K[4]  # focal length in y-direction
+    cx = camera_info.K[2]  # principal point x-coordinate
+    cy = camera_info.K[5]  # principal point y-coordinate
 
-    elif distance_to_obstacle < 1.0:
-        x = back
-        z = turnRight
-        rospy.sleep(0.4)
+    center_x = depth_image.shape[1] // 2
+    center_y = depth_image.shape[0] // 2
 
-   
+    # Get the depth value at the center of the image
+    depth_value = depth_image[center_y, center_x]
+
+    if depth_value > 0:
+        # Convert depth value to meters using the depth image unit (usually meters)
+        depth_in_meters = depth_value
+        return depth_in_meters
     else:
-     x = normalSpeed
-     z = zero
-     rospy.sleep(0.04)
+        return None  # Return None when no valid depth value is found
 
-     x = zero
-     z = turnLeft
-     rospy.sleep(0.1)
-
-     x = normalSpeed
-     z = zero
-     rospy.sleep(0.01)
-
-     x = zero
-     z = turnRight
-     rospy.sleep(0.1)
-
-     x = normalSpeed
-     z = zero
-     rospy.sleep(0.01)
-
-     x = zero
-     z = turnLeft
-     rospy.sleep(0.1)
-
+#main-method
 def main():
-    # Subscriber
-    rospy.Subscriber('/scan', LaserScan, laser_scan_callback) #'replace the laser_scan_topic' with the certain topic
+    global depth_image, camera_info
+
+    # Subscriber for depth image and camera info
+    rospy.Subscriber('/minibot/camera/depth/image_rect_raw', Image, depth_image_callback)
+    rospy.Subscriber('/minibot/camera/depth/camera_info', CameraInfo, camera_info_callback)
+    rospy.wait_for_message('/minibot/camera/depth/image_rect_raw', Image)
+    rospy.wait_for_message('/minibot/camera/depth/camera_info', CameraInfo)
 
     # Set the rate
     rate = rospy.Rate(10)
 
+    # Image and settings for the movement
     while not rospy.is_shutdown():
-        # Publish the message
-        cmd_vel_msg.linear.x = x
-        cmd_vel_msg.angular.z = z
-        cmd_vel_pub.publish(cmd_vel_msg)
+        # Calculate the distance to the obstacle
+        distance = calculate_distance_to_obstacle(depth_image, camera_info)
+        if distance is not None:
+            print(f"Distance to obstacle: {distance:.2f} meters")
+        else:
+            print("Unable to calculate the distance to the obstacle.")
+
+        # Add your robot movement control logic here based on the calculated distance
+        # ...
+
         rate.sleep()
 
 if __name__ == '__main__':

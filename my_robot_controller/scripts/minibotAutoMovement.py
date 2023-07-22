@@ -53,7 +53,7 @@ def calculate_distance_to_obstacle(depth_image):
 
     if len(valid_depth_values) > 0:
         closest_depth = min(valid_depth_values)
-        ret#urn closest_depth * 0.001  # Convert to meters
+        return closest_depth * 0.001  # Convert to meters
     else:
         return None  # Return None when no valid depth values are found
 
@@ -103,8 +103,8 @@ def main():
            #     cmd_vel_msg.angular.z = numPos
         
 # Publish the message
-        cmd_vel_pub.publish(cmd_vel_msg)
-        rate.sleep()
+        #cmd_vel_pub.publish(cmd_vel_msg)
+        #rate.sleep()
 
 if __name__ == '__main__':
     main()

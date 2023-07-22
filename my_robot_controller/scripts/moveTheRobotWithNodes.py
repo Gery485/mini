@@ -82,6 +82,7 @@ def main():
             print(f"Distance to obstacle: {distance_cm:.2f} cm")
         else:
             print("Unable to calculate the distance to the obstacle.")
+            distance_cm = distance/10
             rospy.sleep(0.1)
 
         if distance is not None and distance_cm < 135:

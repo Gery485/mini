@@ -12,6 +12,7 @@ zero = 0
 point2 = 0.2
 minPoint2 = -0.2
 sleep = 0.2
+minDistance = 21
 
 # Definitions for the publisher
 rospy.init_node('msgsForMoving')
@@ -85,7 +86,7 @@ def main():
         x = cmd_vel_msg.linear.x 
         z = cmd_vel_msg.angular.z
 
-        if distance_cm is not None and distance_cm < 135:
+        if distance is not None and distance_cm < 135:
             x = point2
             z = zero
             rospy.sleep(sleep)
@@ -95,7 +96,7 @@ def main():
             x = zero
             z = point2
             rospy.sleep(sleep)
-        elif distance_cm < 21:
+        elif distance_cm < minDistance:
             x = minPoint2
             z = point2
         else:

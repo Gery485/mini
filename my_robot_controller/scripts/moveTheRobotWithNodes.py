@@ -9,8 +9,8 @@ import cv2
 import random
 
 zero = 0
-point2 = 0.5
-minPoint2 = -0.5
+point2 = 0.35
+minPoint2 = -0.35
 sleep = 0.7
 minDistance = 21
 
@@ -88,10 +88,12 @@ def main():
             cmd_vel_msg.linear.x = point2
             cmd_vel_msg.angular.z = zero
             cmd_vel_pub.publish(cmd_vel_msg)
+            print("1. half")
             rospy.sleep(sleep)
             cmd_vel_msg.linear.x = minPoint2
             cmd_vel_msg.angular.z = zero
             cmd_vel_pub.publish(cmd_vel_msg)
+            print("2.half")
             rospy.sleep(sleep)
             cmd_vel_msg.linear.x = zero
             cmd_vel_msg.angular.z = point2

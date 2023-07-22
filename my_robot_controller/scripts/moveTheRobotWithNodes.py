@@ -106,10 +106,13 @@ def main():
             cmd_vel_msg.angular.z = point2
             cmd_vel_pub.publish(cmd_vel_msg)
 
-        else:
+        elif distance is None:
             cmd_vel_msg.linear.x = zero
             cmd_vel_msg.angular.z = point2
             cmd_vel_pub.publish(cmd_vel_msg)
+        
+        else:
+            print("whaaaaat")
             
         rate.sleep()
 

@@ -82,7 +82,6 @@ def main():
             print(f"Distance to obstacle: {distance_cm:.2f} cm")
         else:
             print("Unable to calculate the distance to the obstacle.")
-            distance_cm = distance/10
             rospy.sleep(0.1)
 
         if distance is not None and distance_cm < 135:
@@ -98,10 +97,12 @@ def main():
             cmd_vel_msg.angular.z = point2
             cmd_vel_pub.publish(cmd_vel_msg)
             rospy.sleep(sleep)
-        elif distance_cm < minDistance:
+
+        elif distance is not None and distance_cm < minDistance:
             cmd_vel_msg.linear.x = minPoint2
             cmd_vel_msg.angular.z = point2
             cmd_vel_pub.publish(cmd_vel_msg)
+
         else:
             cmd_vel_msg.linear.x = zero
             cmd_vel_msg.angular.z = point2

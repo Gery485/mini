@@ -53,7 +53,7 @@ def calculate_distance_to_obstacle(depth_image):
 
     if len(valid_depth_values) > 0:
         closest_depth = min(valid_depth_values)
-        return closest_depth * 0.001  # Convert to meters
+        ret#urn closest_depth * 0.001  # Convert to meters
     else:
         return None  # Return None when no valid depth values are found
 
@@ -81,26 +81,26 @@ def main():
            print("Unable to calculate the distance to the obstacle.")
 
 # Moving of the robot based on the calculated distance
-        if distance < 0.230:
-            cmd_vel_msg.linear.x = zero
-            cmd_vel_msg.angular.z = turnLeft
-            rospy.sleep(0.345)
+       # if distance < 0.230:
+       #     cmd_vel_msg.linear.x = zero
+       #     cmd_vel_msg.angular.z = turnLeft
+       #     rospy.sleep(0.345)
 
-        elif distance < 0.190:
-            cmd_vel_msg.linear.x = back
-            cmd_vel_msg.angular.z = zero
+       # elif distance < 0.190:
+       #     cmd_vel_msg.linear.x = back
+       #     cmd_vel_msg.angular.z = zero
 
-        else:
-            numNum = random.choice(liste)
-            if numNum < 0:
-               numNeg = random.choice(listeNegativ)
+       # else:
+       #     numNum = random.choice(liste)
+       #     if numNum < 0:
+       #        numNeg = random.choice(listeNegativ)
                
-               cmd_vel_msg.linear.x = -0.15
-               cmd_vel_msg.angular.z = numNeg
-            else:
-                numPos = random.choice(listePositiv)
-                cmd_vel_msg.linear.x = -0.15
-                cmd_vel_msg.angular.z = numPos
+       #        cmd_vel_msg.linear.x = -0.15
+       #        cmd_vel_msg.angular.z = numNeg
+           # else:
+           #     numPos = random.choice(listePositiv)
+           #     cmd_vel_msg.linear.x = -0.15
+           #     cmd_vel_msg.angular.z = numPos
         
 # Publish the message
         cmd_vel_pub.publish(cmd_vel_msg)

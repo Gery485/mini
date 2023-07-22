@@ -9,9 +9,9 @@ import cv2
 import random
 
 zero = 0
-point2 = 0.2
-minPoint2 = -0.2
-sleep = 0.2
+point2 = 0.3
+minPoint2 = -0.3
+sleep = 0.3
 minDistance = 21
 
 # Definitions for the publisher

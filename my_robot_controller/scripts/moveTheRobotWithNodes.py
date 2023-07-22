@@ -11,7 +11,7 @@ import random
 zero = 0
 point2 = 0.35
 minPoint2 = -0.35
-sleep = 0.7
+sleep = 0.5
 minDistance = 21
 
 # Definitions for the publisher
@@ -80,16 +80,16 @@ def main():
         if distance is not None:
             distance_cm = distance/10  # Convert distance to centimeters
             print(f"Distance to obstacle: {distance_cm:.2f} cm")
+            rospy.sleep(sleep)
         else:
             print("Unable to calculate the distance to the obstacle.")
-            rospy.sleep(0.1)
+            rospy.sleep(sleep)
 
         if distance is not None and distance_cm < 135:
             cmd_vel_msg.linear.x = point2
             cmd_vel_msg.angular.z = zero
             cmd_vel_pub.publish(cmd_vel_msg)
             print("1. half")
-            rospy.sleep(sleep)
             cmd_vel_msg.linear.x = minPoint2
             cmd_vel_msg.angular.z = zero
             cmd_vel_pub.publish(cmd_vel_msg)
@@ -98,6 +98,7 @@ def main():
             cmd_vel_msg.linear.x = zero
             cmd_vel_msg.angular.z = point2
             cmd_vel_pub.publish(cmd_vel_msg)
+            print("3. half")
             rospy.sleep(sleep)
 
         elif distance is not None and distance_cm < minDistance:

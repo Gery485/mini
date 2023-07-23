@@ -81,25 +81,21 @@ def main():
             distance_cm = distance/10  # Convert distance to centimeters
             print(f"Distance to obstacle: {distance_cm:.2f} cm")
              # Movement control based on distance
-"""            if distance_cm < 135:
-            # Perform turning maneuvers
-             cmd_vel_msg.linear.x = point2
-             cmd_vel_msg.angular.z = zero
-             cmd_vel_pub.publish(cmd_vel_msg)
-             print("1. half")
-             rospy.sleep(sleep)
-
-             cmd_vel_msg.linear.x = minPoint2
-             cmd_vel_msg.angular.z = zero
-             cmd_vel_pub.publish(cmd_vel_msg)
-             print("2. half")
-             rospy.sleep(sleep)
-
-             cmd_vel_msg.linear.x = zero
-             cmd_vel_msg.angular.z = 5
-             cmd_vel_pub.publish(cmd_vel_msg)
-             print("3. half")
-             rospy.sleep(sleep)
+            if distance_cm > 300:
+                cmd_vel_msg.linear.x = point2
+                cmd_vel_msg.angular.z = zero
+                cmd_vel_pub.publish(cmd_vel_msg)
+                rospy.sleep(sleep)
+            elif distance_cm <= 300:
+                cmd_vel_msg.linear.x = point2
+                cmd_vel_msg.angular.z = zero
+                cmd_vel_pub.publish(cmd_vel_msg)
+                rospy.sleep(sleep)
+            elif distance_cm <= 100:
+                cmd_vel_msg.linear.x = point2/2
+                cmd_vel_msg.angular.z = zero
+                cmd_vel_pub.publish(cmd_vel_msg)
+                rospy.sleep(sleep)
 
             elif distance_cm < minDistance:
             # Move with minPoint2 linear velocity and point2 angular velocity
@@ -121,9 +117,7 @@ def main():
             rospy.sleep(sleep)
             continue
 
-       
-
         rate.sleep()
-"""
+
 if __name__ == '__main__':
     main()

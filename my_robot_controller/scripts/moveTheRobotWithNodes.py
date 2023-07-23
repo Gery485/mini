@@ -9,10 +9,11 @@ import cv2
 import random
 
 zero = 0
-point2 = 0.3
+move = 0.3
 minPoint2 = -0.35
 sleep = 0.2
-minDistance = 58
+minDistance = 30
+turn = 2
 
 # Definitions for the publisher
 rospy.init_node('msgsForMoving')
@@ -80,39 +81,35 @@ def main():
         if distance is not None:
             distance_cm = distance/10  # Convert distance to centimeters
             print(f"Distance to obstacle: {distance_cm:.2f} cm")
-             # Movement control based on distance
-            if distance_cm > 300:
-                cmd_vel_msg.linear.x = point2
-                cmd_vel_msg.angular.z = zero
-                cmd_vel_pub.publish(cmd_vel_msg)
-                rospy.sleep(sleep)
-                continue
-            
-            elif distance_cm <= 300:
-                cmd_vel_msg.linear.x = point2
-                cmd_vel_msg.angular.z = zero
-                cmd_vel_pub.publish(cmd_vel_msg)
-                rospy.sleep(sleep)
-                continue
 
-            elif distance_cm <= 100:
-                cmd_vel_msg.linear.x = point2/2
+            if distance_cm <= minDistance:
+                cmd_vel_msg.linear.x = zero
                 cmd_vel_msg.angular.z = zero
                 cmd_vel_pub.publish(cmd_vel_msg)
                 rospy.sleep(sleep)
+                cmd_vel_msg.linear.x = zero
+                cmd_vel_msg.angular.z = turn
+                cmd_vel_pub.publish(cmd_vel_msg)
                 continue
-
-            elif distance_cm < minDistance:
-            # Move with minPoint2 linear velocity and point2 angular velocity
-             cmd_vel_msg.linear.x = minPoint2
-             cmd_vel_msg.angular.z = point2
-             cmd_vel_pub.publish(cmd_vel_msg)
 
             else:
-            # Move forward with point2 linear velocity and point2 angular velocity
-             cmd_vel_msg.linear.x = point2
-             cmd_vel_msg.angular.z = point2
+             cmd_vel_msg.linear.x = move
+             cmd_vel_msg.angular.z = zero
              cmd_vel_pub.publish(cmd_vel_msg)
+             rospy.sleep(sleep)
+             cmd_vel_msg.linear.x = zero
+             cmd_vel_msg.angular.z = turn
+             cmd_vel_pub.publish(cmd_vel_msg)
+             rospy.sleep(sleep)
+             cmd_vel_msg.linear.x = zero
+             cmd_vel_msg.angular.z = turn * -2
+             cmd_vel_pub.publish(cmd_vel_msg)
+             rospy.sleep(sleep)
+             cmd_vel_msg.linear.x = zero
+             cmd_vel_msg.angular.z = turn
+             cmd_vel_pub.publish(cmd_vel_msg)
+             rospy.sleep(sleep)
+             continue
 
         else:
             print("Unable to calculate the distance to the obstacle.")

@@ -13,7 +13,7 @@ move = 0.3
 minPoint2 = -0.35
 sleep = 0.2
 minDistance = 30
-turn = 2
+turn = 4
 
 # Definitions for the publisher
 rospy.init_node('msgsForMoving')

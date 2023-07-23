@@ -83,7 +83,7 @@ def main():
              # Movement control based on distance
             if distance_cm > 300:
                 cmd_vel_msg.linear.x = point2
-                cmd_vel_msg.angular.z = 3
+                cmd_vel_msg.angular.z = zero
                 cmd_vel_pub.publish(cmd_vel_msg)
                 rospy.sleep(sleep)
             elif distance_cm <= 300:

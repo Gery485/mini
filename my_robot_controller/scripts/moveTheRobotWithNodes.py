@@ -12,8 +12,9 @@ zero = 0
 move = 0.3
 minPoint2 = -0.35
 sleep = 0.2
+sleep1 = 0.6
 minDistance = 30
-turn = 4
+turn = 2
 
 # Definitions for the publisher
 rospy.init_node('msgsForMoving')
@@ -96,19 +97,19 @@ def main():
              cmd_vel_msg.linear.x = move
              cmd_vel_msg.angular.z = zero
              cmd_vel_pub.publish(cmd_vel_msg)
-             rospy.sleep(sleep)
+             rospy.sleep(sleep1)
              cmd_vel_msg.linear.x = zero
              cmd_vel_msg.angular.z = turn
              cmd_vel_pub.publish(cmd_vel_msg)
-             rospy.sleep(sleep)
+             rospy.sleep(sleep1)
              cmd_vel_msg.linear.x = zero
              cmd_vel_msg.angular.z = turn * -2
              cmd_vel_pub.publish(cmd_vel_msg)
-             rospy.sleep(sleep)
+             rospy.sleep(sleep1)
              cmd_vel_msg.linear.x = zero
              cmd_vel_msg.angular.z = turn
              cmd_vel_pub.publish(cmd_vel_msg)
-             rospy.sleep(sleep)
+             rospy.sleep(sleep1)
              continue
 
         else:

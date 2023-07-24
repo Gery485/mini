@@ -10,7 +10,7 @@ import random
 
 #moving
 zero = 0
-move = 0.1
+move = 0.3
 turn = 1
 
 #waiting

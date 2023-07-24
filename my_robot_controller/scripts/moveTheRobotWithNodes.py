@@ -16,6 +16,7 @@ turn = 1
 #waiting
 sleep = 0.3
 sleep1 = 0.5
+sleep2 = 3
 
 #distances in cm
 minDistance = 30
@@ -103,22 +104,26 @@ def main():
              cmd_vel_msg.angular.z = zero
              cmd_vel_pub.publish(cmd_vel_msg)
              rospy.sleep(sleep1)
+
              cmd_vel_msg.linear.x = zero
              cmd_vel_msg.angular.z = turn
              cmd_vel_pub.publish(cmd_vel_msg)
-             rospy.sleep(sleep1)
+             rospy.sleep(sleep2)
+
              cmd_vel_msg.linear.x = zero
              cmd_vel_msg.angular.z = turn * -1
              cmd_vel_pub.publish(cmd_vel_msg)
-             rospy.sleep(sleep1)
+             rospy.sleep(sleep2)
+
              cmd_vel_msg.linear.x = zero
              cmd_vel_msg.angular.z = turn * -1
              cmd_vel_pub.publish(cmd_vel_msg)
-             rospy.sleep(sleep1)
+             rospy.sleep(sleep2)
+
              cmd_vel_msg.linear.x = zero
              cmd_vel_msg.angular.z = turn
              cmd_vel_pub.publish(cmd_vel_msg)
-             rospy.sleep(sleep1)
+             rospy.sleep(sleep2)
              continue
 
         else:

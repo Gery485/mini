@@ -86,58 +86,58 @@ def main():
         # Calculate the distance to the obstacle
         distance = calculate_distance_to_obstacle(depth_image, camera_info)
         if distance is not None:
-            distance_cm = distance/10  # Convert distance to centimeters
+            distance_cm = distance / 10  # Convert distance to centimeters
             print(f"Distance to obstacle: {distance_cm:.2f} cm")
-            
+
             if distance_cm <= minDistance:
-                start = time.time()
-                while time.time() - start < 1.1:
+                start = rospy.Time.now()
+                while rospy.Time.now() - start < rospy.Duration(1.1):
                     cmd_vel_msg.linear.x = zero
                     cmd_vel_msg.angular.z = zero
                     cmd_vel_pub.publish(cmd_vel_msg)
                     rate.sleep()
 
-                start1 = time.time()
-                while time.time() - start1 < 1.1:
+                start1 = rospy.Time.now()
+                while rospy.Time.now() - start1 < rospy.Duration(1.1):
                     cmd_vel_msg.linear.x = zero
                     cmd_vel_msg.angular.z = turn
                     cmd_vel_pub.publish(cmd_vel_msg)
                     rate.sleep()
             else:
-                start1 = time.time()
-                while time.time() - start1 < 1.1:
-                  cmd_vel_msg.linear.x = move
-                  cmd_vel_msg.angular.z = zero
-                  cmd_vel_pub.publish(cmd_vel_msg)
-                  rate.sleep()
+                start1 = rospy.Time.now()
+                while rospy.Time.now() - start1 < rospy.Duration(1.1):
+                    cmd_vel_msg.linear.x = move
+                    cmd_vel_msg.angular.z = zero
+                    cmd_vel_pub.publish(cmd_vel_msg)
+                    rate.sleep()
 
-                start2 = time.time()
-                while time.time() - start2 < 1.1:
-                  cmd_vel_msg.linear.x = zero
-                  cmd_vel_msg.angular.z = turn
-                  cmd_vel_pub.publish(cmd_vel_msg)
-                  rate.sleep()
+                start2 = rospy.Time.now()
+                while rospy.Time.now() - start2 < rospy.Duration(1.1):
+                    cmd_vel_msg.linear.x = zero
+                    cmd_vel_msg.angular.z = turn
+                    cmd_vel_pub.publish(cmd_vel_msg)
+                    rate.sleep()
 
-                start3 = time.time()  
-                while time.time() - start3 < 1.1:
-                  cmd_vel_msg.linear.x = zero
-                  cmd_vel_msg.angular.z = turn * -1
-                  cmd_vel_pub.publish(cmd_vel_msg)
-                  rate.sleep()
+                start3 = rospy.Time.now()
+                while rospy.Time.now() - start3 < rospy.Duration(1.1):
+                    cmd_vel_msg.linear.x = zero
+                    cmd_vel_msg.angular.z = turn * -1
+                    cmd_vel_pub.publish(cmd_vel_msg)
+                    rate.sleep()
 
-                start4 = time.time()  
-                while time.time() - start4 < 1.1:
-                  cmd_vel_msg.linear.x = zero
-                  cmd_vel_msg.angular.z = turn * -1
-                  cmd_vel_pub.publish(cmd_vel_msg)
-                  rate.sleep()
+                start4 = rospy.Time.now()
+                while rospy.Time.now() - start4 < rospy.Duration(1.1):
+                    cmd_vel_msg.linear.x = zero
+                    cmd_vel_msg.angular.z = turn * -1
+                    cmd_vel_pub.publish(cmd_vel_msg)
+                    rate.sleep()
 
-                start5 = time.time()  
-                while time.time() - start5 < 1.1:
-                  cmd_vel_msg.linear.x = zero
-                  cmd_vel_msg.angular.z = turn
-                  cmd_vel_pub.publish(cmd_vel_msg)
-                  rate.sleep()
+                start5 = rospy.Time.now()
+                while rospy.Time.now() - start5 < rospy.Duration(1.1):
+                    cmd_vel_msg.linear.x = zero
+                    cmd_vel_msg.angular.z = turn
+                    cmd_vel_pub.publish(cmd_vel_msg)
+                    rate.sleep()
         else:
             print("Unable to calculate the distance to the obstacle.")
             cmd_vel_msg.linear.x = zero

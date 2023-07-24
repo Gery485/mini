@@ -7,15 +7,16 @@ from sensor_msgs.msg import Image, CameraInfo
 from cv_bridge import CvBridge
 import cv2
 import random
+import time
 
 #moving
 zero = 0
 move = 0.3
-turn = 3
+turn = 1
 
 #waiting
-sleep = 0.3
-sleep1 = 0.5
+sleep = 0.1
+sleep1 = 2
 
 #distances in cm
 minDistance = 30
@@ -87,48 +88,65 @@ def main():
         if distance is not None:
             distance_cm = distance/10  # Convert distance to centimeters
             print(f"Distance to obstacle: {distance_cm:.2f} cm")
-
+            
             if distance_cm <= minDistance:
-                cmd_vel_msg.linear.x = zero
-                cmd_vel_msg.angular.z = zero
-                cmd_vel_pub.publish(cmd_vel_msg)
-                rospy.sleep(sleep)
-                cmd_vel_msg.linear.x = zero
-                cmd_vel_msg.angular.z = turn
-                cmd_vel_pub.publish(cmd_vel_msg)
+
+                start = time.time()
+                start1 = time.time()
+                rate = rospy.Rate(10)
+                while time.time() - start < 1.1:
+
+                    cmd_vel_msg.linear.x = zero
+                    cmd_vel_msg.angular.z = zero
+                    cmd_vel_pub.publish(cmd_vel_msg)
+                    rate.sleep()
+
+                while time.time() - start1 < 1.1:
+                    cmd_vel_msg.linear.x = zero
+                    cmd_vel_msg.angular.z = turn
+                    cmd_vel_pub.publish(cmd_vel_msg)
+                    rate.sleep()
                 continue
 
             else:
-             cmd_vel_msg.linear.x = move
-             cmd_vel_msg.angular.z = zero
-             cmd_vel_pub.publish(cmd_vel_msg)
-             rospy.sleep(sleep1)
+                start1 = time.time()
+                start2 = time.time()
+                start3 = time.time()
+                start4 = time.time()
+                start5 = time.time()
+                rate = rospy.Rate(10)
 
-             cmd_vel_msg.linear.x = zero
-             cmd_vel_msg.angular.z = turn
-             cmd_vel_pub.publish(cmd_vel_msg)
-             rospy.sleep(sleep1)
-
-             cmd_vel_msg.linear.x = zero
-             cmd_vel_msg.angular.z = turn * -1
-             cmd_vel_pub.publish(cmd_vel_msg)
-             rospy.sleep(sleep1)
-
-             cmd_vel_msg.linear.x = zero
-             cmd_vel_msg.angular.z = turn * -1
-             cmd_vel_pub.publish(cmd_vel_msg)
-             rospy.sleep(sleep1)
-
-             cmd_vel_msg.linear.x = zero
-             cmd_vel_msg.angular.z = turn
-             cmd_vel_pub.publish(cmd_vel_msg)
-             rospy.sleep(sleep1)
-             continue
+                while time.time() - start1 < 1.1:
+                  cmd_vel_msg.linear.x = move
+                  cmd_vel_msg.angular.z = zero
+                  cmd_vel_pub.publish(cmd_vel_msg)
+             
+                while time.time() - start2 < 1.1:
+                  cmd_vel_msg.linear.x = zero
+                  cmd_vel_msg.angular.z = turn
+                  cmd_vel_pub.publish(cmd_vel_msg)
+             
+                while time.time() - start3 < 1.1:
+                  cmd_vel_msg.linear.x = zero
+                  cmd_vel_msg.angular.z = turn * -1
+                  cmd_vel_pub.publish(cmd_vel_msg)
+             
+                while time.time() - start4 < 1.1:
+                  cmd_vel_msg.linear.x = zero
+                  cmd_vel_msg.angular.z = turn * -1
+                  cmd_vel_pub.publish(cmd_vel_msg)
+             
+                while time.time() - start5 < 1.1:
+                  cmd_vel_msg.linear.x = zero
+                  cmd_vel_msg.angular.z = turn
+                  cmd_vel_pub.publish(cmd_vel_msg)
+             
+                continue
 
         else:
             print("Unable to calculate the distance to the obstacle.")
             cmd_vel_msg.linear.x = zero
-            cmd_vel_msg.angular.z = 5
+            cmd_vel_msg.angular.z = turn
             cmd_vel_pub.publish(cmd_vel_msg)
             rospy.sleep(sleep)
             continue

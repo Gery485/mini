@@ -11,12 +11,11 @@ import random
 #moving
 zero = 0
 move = 0.3
-turn = 1
+turn = 3
 
 #waiting
 sleep = 0.3
 sleep1 = 0.5
-sleep2 = 3
 
 #distances in cm
 minDistance = 30
@@ -108,22 +107,22 @@ def main():
              cmd_vel_msg.linear.x = zero
              cmd_vel_msg.angular.z = turn
              cmd_vel_pub.publish(cmd_vel_msg)
-             rospy.sleep(sleep2)
+             rospy.sleep(sleep1)
 
              cmd_vel_msg.linear.x = zero
              cmd_vel_msg.angular.z = turn * -1
              cmd_vel_pub.publish(cmd_vel_msg)
-             rospy.sleep(sleep2)
+             rospy.sleep(sleep1)
 
              cmd_vel_msg.linear.x = zero
              cmd_vel_msg.angular.z = turn * -1
              cmd_vel_pub.publish(cmd_vel_msg)
-             rospy.sleep(sleep2)
+             rospy.sleep(sleep1)
 
              cmd_vel_msg.linear.x = zero
              cmd_vel_msg.angular.z = turn
              cmd_vel_pub.publish(cmd_vel_msg)
-             rospy.sleep(sleep2)
+             rospy.sleep(sleep1)
              continue
 
         else:

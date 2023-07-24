@@ -90,54 +90,39 @@ def main():
             print(f"Distance to obstacle: {distance_cm:.2f} cm")
 
             if distance_cm <= minDistance:
-                start = rospy.Time.now()
-                while rospy.Time.now() - start < rospy.Duration(1.1):
                     cmd_vel_msg.linear.x = zero
                     cmd_vel_msg.angular.z = zero
                     cmd_vel_pub.publish(cmd_vel_msg)
-                    rate.sleep()
-
-                start1 = rospy.Time.now()
-                while rospy.Time.now() - start1 < rospy.Duration(1.1):
+                    rospy.sleep(sleep)
                     cmd_vel_msg.linear.x = zero
                     cmd_vel_msg.angular.z = turn
                     cmd_vel_pub.publish(cmd_vel_msg)
-                    rate.sleep()
+                    rospy.sleep(sleep)
             else:
-                start1 = rospy.Time.now()
-                while rospy.Time.now() - start1 < rospy.Duration(1.1):
                     cmd_vel_msg.linear.x = move
                     cmd_vel_msg.angular.z = zero
                     cmd_vel_pub.publish(cmd_vel_msg)
-                    rate.sleep()
+                    rospy.sleep(sleep)
 
-                start2 = rospy.Time.now()
-                while rospy.Time.now() - start2 < rospy.Duration(1.1):
                     cmd_vel_msg.linear.x = zero
                     cmd_vel_msg.angular.z = turn
                     cmd_vel_pub.publish(cmd_vel_msg)
-                    rate.sleep()
+                    rospy.sleep(sleep)
 
-                start3 = rospy.Time.now()
-                while rospy.Time.now() - start3 < rospy.Duration(1.1):
                     cmd_vel_msg.linear.x = zero
                     cmd_vel_msg.angular.z = turn * -1
                     cmd_vel_pub.publish(cmd_vel_msg)
-                    rate.sleep()
+                    rospy.sleep(sleep)
 
-                start4 = rospy.Time.now()
-                while rospy.Time.now() - start4 < rospy.Duration(1.1):
                     cmd_vel_msg.linear.x = zero
                     cmd_vel_msg.angular.z = turn * -1
                     cmd_vel_pub.publish(cmd_vel_msg)
-                    rate.sleep()
+                    rospy.sleep(sleep)
 
-                start5 = rospy.Time.now()
-                while rospy.Time.now() - start5 < rospy.Duration(1.1):
                     cmd_vel_msg.linear.x = zero
                     cmd_vel_msg.angular.z = turn
                     cmd_vel_pub.publish(cmd_vel_msg)
-                    rate.sleep()
+                    rospy.sleep(sleep)
         else:
             print("Unable to calculate the distance to the obstacle.")
             cmd_vel_msg.linear.x = zero

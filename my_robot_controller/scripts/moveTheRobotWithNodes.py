@@ -15,7 +15,7 @@ turn = 1
 
 #waiting
 sleep = 0.3
-sleep1 = 2
+sleep1 = 0.3
 
 #distances in cm
 minDistance = 30

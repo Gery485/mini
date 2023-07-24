@@ -91,55 +91,53 @@ def main():
             
             if distance_cm <= minDistance:
                 start = time.time()
-                start1 = time.time()
                 while time.time() - start < 1.1:
                     cmd_vel_msg.linear.x = zero
                     cmd_vel_msg.angular.z = zero
                     cmd_vel_pub.publish(cmd_vel_msg)
                     rate.sleep()
 
+                start1 = time.time()
                 while time.time() - start1 < 1.1:
                     cmd_vel_msg.linear.x = zero
                     cmd_vel_msg.angular.z = turn
                     cmd_vel_pub.publish(cmd_vel_msg)
                     rate.sleep()
-                continue
-
             else:
                 start1 = time.time()
-                start2 = time.time()
-                start3 = time.time()
-                start4 = time.time()
-                start5 = time.time()
-                
-
                 while time.time() - start1 < 1.1:
                   cmd_vel_msg.linear.x = move
                   cmd_vel_msg.angular.z = zero
                   cmd_vel_pub.publish(cmd_vel_msg)
                   rate.sleep()
+
+                start2 = time.time()
                 while time.time() - start2 < 1.1:
                   cmd_vel_msg.linear.x = zero
                   cmd_vel_msg.angular.z = turn
                   cmd_vel_pub.publish(cmd_vel_msg)
                   rate.sleep()
+
+                start3 = time.time()  
                 while time.time() - start3 < 1.1:
                   cmd_vel_msg.linear.x = zero
                   cmd_vel_msg.angular.z = turn * -1
                   cmd_vel_pub.publish(cmd_vel_msg)
                   rate.sleep()
+
+                start4 = time.time()  
                 while time.time() - start4 < 1.1:
                   cmd_vel_msg.linear.x = zero
                   cmd_vel_msg.angular.z = turn * -1
                   cmd_vel_pub.publish(cmd_vel_msg)
                   rate.sleep()
+
+                start5 = time.time()  
                 while time.time() - start5 < 1.1:
                   cmd_vel_msg.linear.x = zero
                   cmd_vel_msg.angular.z = turn
                   cmd_vel_pub.publish(cmd_vel_msg)
                   rate.sleep()
-                continue
-            
         else:
             print("Unable to calculate the distance to the obstacle.")
             cmd_vel_msg.linear.x = zero

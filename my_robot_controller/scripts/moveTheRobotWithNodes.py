@@ -8,13 +8,18 @@ from cv_bridge import CvBridge
 import cv2
 import random
 
+#moving
 zero = 0
-move = 0.3
-minPoint2 = -0.35
-sleep = 0.2
-sleep1 = 0.6
+move = 0.1
+turn = 1
+
+#waiting
+sleep = 0.3
+sleep1 = 2
+
+#distances in cm
 minDistance = 30
-turn = 2
+
 
 # Definitions for the publisher
 rospy.init_node('msgsForMoving')
@@ -103,9 +108,9 @@ def main():
              cmd_vel_pub.publish(cmd_vel_msg)
              rospy.sleep(sleep1)
              cmd_vel_msg.linear.x = zero
-             cmd_vel_msg.angular.z = turn * -2
+             cmd_vel_msg.angular.z = turn * -1
              cmd_vel_pub.publish(cmd_vel_msg)
-             rospy.sleep(sleep1)
+             rospy.sleep(sleep1 * 2)
              cmd_vel_msg.linear.x = zero
              cmd_vel_msg.angular.z = turn
              cmd_vel_pub.publish(cmd_vel_msg)

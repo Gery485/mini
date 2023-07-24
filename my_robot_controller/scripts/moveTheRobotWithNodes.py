@@ -95,7 +95,6 @@ def main():
                 start1 = time.time()
                 rate = rospy.Rate(10)
                 while time.time() - start < 1.1:
-                    while 
                     cmd_vel_msg.linear.x = zero
                     cmd_vel_msg.angular.z = zero
                     cmd_vel_pub.publish(cmd_vel_msg)

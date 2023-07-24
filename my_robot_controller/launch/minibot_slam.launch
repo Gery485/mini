@@ -1,0 +1,11 @@
+<launch>
+    <include file="$(find minibot)/launch/bringup_minibot.launch">
+        <arg name="run_arm" value="false"/>
+    </include>
+
+
+    <group ns="$(optenv ROBOT minibot)" >
+        <include file="$(find my_robot_controller)/launch/opensource_tracking.launch" />
+    </group>
+
+</launch>

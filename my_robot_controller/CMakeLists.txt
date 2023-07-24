@@ -9,7 +9,6 @@ project(my_robot_controller)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
   rospy
-  turtlesim
 )
 
 ## System dependencies are found with CMake's conventions

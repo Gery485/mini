@@ -1,6 +1,7 @@
 <launch>
     <include file="$(find minibot)/launch/bringup_minibot.launch">
         <arg name="run_arm" value="false"/>
+        <arg name="pub_odom_as_tf" value="false"/>
     </include>
 
 

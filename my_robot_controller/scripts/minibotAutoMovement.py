@@ -1,25 +1,23 @@
 #!/usr/bin/env python3
 
-#imports
 import rospy
 from geometry_msgs.msg import Twist
 from sensor_msgs.msg import Image, CameraInfo
 from cv_bridge import CvBridge
 import cv2
 import random
-import time
 
-#moving
+# Moving
 zero = 0
 move = 0.3
 turn = 1.5
 
-#waiting
+# Waiting
 sleep = 0.5
 sleep1 = 1
 
-#distances in cm
-minDistance = 120
+# Distances in cm
+minDistance = 100
 
 number = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.3, 1.4, 1.5]
 
@@ -31,7 +29,7 @@ bridge = CvBridge()
 depth_image = None
 camera_info = None
 
-#converts the image to a CV2 image format and received subscriber node
+# Converts the image to a CV2 image format and receives subscriber node
 def depth_image_callback(msg):
     global depth_image
     try:
@@ -43,8 +41,8 @@ def camera_info_callback(msg):
     global camera_info
     camera_info = msg
 
-#returns the value of the distance between the camera and the closest obstacle in meters
-#returns inf, if there is no received image and filters
+# Returns the value of the distance between the camera and the closest obstacle in meters
+# Returns inf, if there is no received image and filters
 def calculate_distance_to_obstacle(depth_image, camera_info):
     if depth_image is None or camera_info is None:
         raise ValueError("No depth image or camera info provided")
@@ -116,9 +114,9 @@ def main():
                 rospy.sleep(choice)
             print(f"Distance to obstacle: {distance_cm:.2f} cm")
 
-            if rospy.get_published_topics('/rosout') > 0:
-                log_messages = rospy.get_published_topics('/rosout')
-                has_warn_message = check_warn_messages(log_messages, "Registration failed")
+            # Check for the specific WARN message "Registration failed"
+            log_messages = rospy.get_published_topics('/rosout')
+            has_warn_message = check_warn_messages(log_messages, "Registration failed")
 
             if has_warn_message:
                 print("WARN message: Registration failed!")

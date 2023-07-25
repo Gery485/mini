@@ -68,6 +68,9 @@ def calculate_distance_to_obstacle(depth_image, camera_info):
 
 # Check if there is a WARN message containing the specified text in the log messages
 def check_warn_messages(log_messages, search_text):
+    if not log_messages:  # Check if the log_messages list is empty
+        return False
+
     for log_msg in log_messages:
         if 'WARN' in log_msg and search_text in log_msg:
             return True

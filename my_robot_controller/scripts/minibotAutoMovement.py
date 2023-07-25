@@ -104,7 +104,7 @@ def main():
         if distance is not None:
             distance_cm = distance / 10  # Convert distance to centimeters
             print(f"Distance to obstacle: {distance_cm:.2f} cm")
-)
+
 
             if failure == True:
                 failure = False

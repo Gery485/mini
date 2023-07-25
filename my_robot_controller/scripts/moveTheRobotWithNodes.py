@@ -19,8 +19,9 @@ sleep = 0.5
 sleep1 = 1
 
 #distances in cm
-minDistance = 30
+minDistance = 60
 
+number = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.3, 1.4, 1.5]
 
 # Definitions for the publisher
 rospy.init_node('msgsForMoving')
@@ -91,15 +92,22 @@ def main():
 
 
             if distance_cm <= minDistance:
+                    choice = random.choice(number)
                     cmd_vel_msg.linear.x = zero
                     cmd_vel_msg.angular.z = zero
                     cmd_vel_pub.publish(cmd_vel_msg)
-                    rospy.sleep(sleep)
+                    rospy.sleep(choice)
                     cmd_vel_msg.linear.x = zero
                     cmd_vel_msg.angular.z = turn
                     cmd_vel_pub.publish(cmd_vel_msg)
-                    rospy.sleep(sleep)
+                    rospy.sleep(choice)
             else:
+                    cmd_vel_msg.linear.x = zero
+                    cmd_vel_msg.angular.z = turn
+                    rospy.sleep(sleep)
+                    cmd_vel_msg.linear.x = zero
+                    cmd_vel_msg.angular.z = turn
+                    
                     cmd_vel_msg.linear.x = move
                     cmd_vel_msg.angular.z = zero
                     cmd_vel_pub.publish(cmd_vel_msg)

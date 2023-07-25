@@ -74,16 +74,15 @@ def calculate_distance_to_obstacle(depth_image, camera_info):
 # Callback function for the /minibot/rtabmap/odom_info topic
 def odom_info_callback(msg):
     global failure
-    if msg.data:
+
+    if msg.lost:
         rospy.loginfo("Received True on /minibot/rtabmap/odom_info topic.")
         failure = True
-    else:
-        rospy.loginfo("Received False on /minibot/rtabmap/odom_info topic.")
-        failure = False
+
 
 # Main method
 def main():
-    global depth_image, camera_info
+    global depth_image, camera_info, failure
 
     # Subscriber for depth image, camera info, and odom_info
     rospy.Subscriber('/minibot/camera/depth/image_rect_raw', Image, depth_image_callback)

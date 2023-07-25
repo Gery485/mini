@@ -75,6 +75,8 @@ def calculate_distance_to_obstacle(depth_image, camera_info):
 def odom_info_callback(msg):
     global failure
 
+    print(msg.lost)
+
     if msg.lost:
         rospy.loginfo("Received True on /minibot/rtabmap/odom_info topic.")
         failure = True
@@ -102,6 +104,7 @@ def main():
         if distance is not None:
             distance_cm = distance / 10  # Convert distance to centimeters
             print(f"Distance to obstacle: {distance_cm:.2f} cm")
+)
 
             if failure == True:
                 failure = False

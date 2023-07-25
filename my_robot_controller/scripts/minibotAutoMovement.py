@@ -4,20 +4,24 @@ import rospy
 from geometry_msgs.msg import Twist
 from sensor_msgs.msg import Image, CameraInfo
 from cv_bridge import CvBridge
+from std_msgs.msg import Bool
 import cv2
 import random
+import time
 
 # Moving
 zero = 0
 move = 0.3
 turn = 1.5
 
+failure = False
+
 # Waiting
 sleep = 0.5
 sleep1 = 1
 
 # Distances in cm
-minDistance = 100
+minDistance = 120
 
 number = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.3, 1.4, 1.5]
 
@@ -32,6 +36,7 @@ camera_info = None
 # Converts the image to a CV2 image format and receives subscriber node
 def depth_image_callback(msg):
     global depth_image
+    #print('Image received')
     try:
         depth_image = bridge.imgmsg_to_cv2(msg, "32FC1")
     except Exception as e:
@@ -66,38 +71,29 @@ def calculate_distance_to_obstacle(depth_image, camera_info):
     else:
         return None  # Return None when no valid depth value is found
 
-# Check if there is a WARN message containing the specified text in the log messages
-def check_warn_messages(log_messages, search_text):
-    for log_msg in log_messages:
-        if 'WARN' in log_msg and search_text in log_msg:
-            return True
-    return False
+# Callback function for the /minibot/rtabmap/odom_info topic
+def odom_info_callback(msg):
+    global failure
+    if msg.data:
+        rospy.loginfo("Received True on /minibot/rtabmap/odom_info topic.")
+        failure = True
+    else:
+        rospy.loginfo("Received False on /minibot/rtabmap/odom_info topic.")
+        failure = False
 
-# Turn the robot slowly
-def turn_slowly():
-    # Set angular velocity for slow turn
-    cmd_vel_msg.linear.x = 0
-    cmd_vel_msg.angular.z = 0.2  # Adjust the angular velocity as needed
-    cmd_vel_pub.publish(cmd_vel_msg)
-    rospy.sleep(2)  # Adjust the sleep duration as needed
-    # Stop turning
-    cmd_vel_msg.angular.z = 0
-    cmd_vel_pub.publish(cmd_vel_msg)
-
+# Main method
 def main():
     global depth_image, camera_info
 
-    # Subscriber for depth image and camera info
+    # Subscriber for depth image, camera info, and odom_info
     rospy.Subscriber('/minibot/camera/depth/image_rect_raw', Image, depth_image_callback)
     rospy.Subscriber('/minibot/camera/depth/camera_info', CameraInfo, camera_info_callback)
+    rospy.Subscriber("minibot/rtabmap/odom_info", Bool, callback=odom_info_callback, queue_size=10)
     rospy.wait_for_message('/minibot/camera/depth/image_rect_raw', Image)
     rospy.wait_for_message('/minibot/camera/depth/camera_info', CameraInfo)
 
     # Set the rate
     rate = rospy.Rate(10)
-
-    # Flag to indicate if "Registration failed" warning occurred
-    registration_failed = False
 
     # Image and settings for the movement
     while not rospy.is_shutdown():
@@ -105,60 +101,55 @@ def main():
         distance = calculate_distance_to_obstacle(depth_image, camera_info)
         if distance is not None:
             distance_cm = distance / 10  # Convert distance to centimeters
-            if distance_cm <= minDistance:
-             choice = random.choice(number)
-             cmd_vel_msg.linear.x = zero
-             cmd_vel_msg.angular.z = zero
-             cmd_vel_pub.publish(cmd_vel_msg)
-             rospy.sleep(choice)
-             cmd_vel_msg.linear.x = zero
-             cmd_vel_msg.angular.z = turn
-             cmd_vel_pub.publish(cmd_vel_msg)
-             rospy.sleep(choice)
             print(f"Distance to obstacle: {distance_cm:.2f} cm")
 
+            if failure:
+                failure = False
+                cmd_vel_msg.linear.x = zero
+                cmd_vel_msg.angular.z = turn
 
             if distance_cm <= minDistance:
-                    choice = random.choice(number)
-                    cmd_vel_msg.linear.x = zero
-                    cmd_vel_msg.angular.z = zero
-                    cmd_vel_pub.publish(cmd_vel_msg)
-                    rospy.sleep(choice)
-                    cmd_vel_msg.linear.x = zero
-                    cmd_vel_msg.angular.z = turn
-                    cmd_vel_pub.publish(cmd_vel_msg)
-                    rospy.sleep(choice)
+                choice = random.choice(number)
+                cmd_vel_msg.linear.x = zero
+                cmd_vel_msg.angular.z = zero
+                cmd_vel_pub.publish(cmd_vel_msg)
+                rospy.sleep(choice)
+                cmd_vel_msg.linear.x = zero
+                cmd_vel_msg.angular.z = turn
+                cmd_vel_pub.publish(cmd_vel_msg)
+                rospy.sleep(choice)
+
             else:
-                    cmd_vel_msg.linear.x = zero
-                    cmd_vel_msg.angular.z = turn
-                    rospy.sleep(sleep)
-                    cmd_vel_msg.linear.x = zero
-                    cmd_vel_msg.angular.z = turn
-                    
-                    cmd_vel_msg.linear.x = move
-                    cmd_vel_msg.angular.z = zero
-                    cmd_vel_pub.publish(cmd_vel_msg)
-                    rospy.sleep(sleep)
+                cmd_vel_msg.linear.x = zero
+                cmd_vel_msg.angular.z = turn
+                rospy.sleep(sleep)
+                cmd_vel_msg.linear.x = zero
+                cmd_vel_msg.angular.z = turn
 
-                    cmd_vel_msg.linear.x = zero
-                    cmd_vel_msg.angular.z = turn
-                    cmd_vel_pub.publish(cmd_vel_msg)
-                    rospy.sleep(sleep1)
+                cmd_vel_msg.linear.x = move
+                cmd_vel_msg.angular.z = zero
+                cmd_vel_pub.publish(cmd_vel_msg)
+                rospy.sleep(sleep)
 
-                    cmd_vel_msg.linear.x = zero
-                    cmd_vel_msg.angular.z = turn * -1
-                    cmd_vel_pub.publish(cmd_vel_msg)
-                    rospy.sleep(sleep1)
+                cmd_vel_msg.linear.x = zero
+                cmd_vel_msg.angular.z = turn
+                cmd_vel_pub.publish(cmd_vel_msg)
+                rospy.sleep(sleep1)
 
-                    cmd_vel_msg.linear.x = zero
-                    cmd_vel_msg.angular.z = turn * -1
-                    cmd_vel_pub.publish(cmd_vel_msg)
-                    rospy.sleep(sleep1)
+                cmd_vel_msg.linear.x = zero
+                cmd_vel_msg.angular.z = turn * -1
+                cmd_vel_pub.publish(cmd_vel_msg)
+                rospy.sleep(sleep1)
 
-                    cmd_vel_msg.linear.x = zero
-                    cmd_vel_msg.angular.z = turn
-                    cmd_vel_pub.publish(cmd_vel_msg)
-                    rospy.sleep(sleep1)
+                cmd_vel_msg.linear.x = zero
+                cmd_vel_msg.angular.z = turn * -1
+                cmd_vel_pub.publish(cmd_vel_msg)
+                rospy.sleep(sleep1)
+
+                cmd_vel_msg.linear.x = zero
+                cmd_vel_msg.angular.z = turn
+                cmd_vel_pub.publish(cmd_vel_msg)
+                rospy.sleep(sleep1)
         else:
             print("Unable to calculate the distance to the obstacle.")
             cmd_vel_msg.linear.x = zero

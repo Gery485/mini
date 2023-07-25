@@ -4,7 +4,7 @@ import rospy
 from geometry_msgs.msg import Twist
 from sensor_msgs.msg import Image, CameraInfo
 from cv_bridge import CvBridge
-from rtabmap_msgs.msg import OdomInfo
+from nav_msgs.msg import OdomInfo
 import cv2
 import random
 import time
@@ -90,7 +90,7 @@ def main():
     # Subscriber for depth image, camera info, and odom_info
     rospy.Subscriber('/minibot/camera/depth/image_rect_raw', Image, depth_image_callback)
     rospy.Subscriber('/minibot/camera/depth/camera_info', CameraInfo, camera_info_callback)
-    rospy.Subscriber("minibot/rtabmap/odom_info", OdomInfo, callback=odom_info_callback, queue_size=10)
+    rospy.Subscriber("minibot/rtabmap/odom_info", OdomInfo, odom_info_callback, queue_size=10)
     rospy.wait_for_message('/minibot/camera/depth/image_rect_raw', Image)
     rospy.wait_for_message('/minibot/camera/depth/camera_info', CameraInfo)
 

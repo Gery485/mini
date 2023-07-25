@@ -107,6 +107,8 @@ def main():
                 failure = False
                 cmd_vel_msg.linear.x = zero
                 cmd_vel_msg.angular.z = turn
+                cmd_vel_pub.publish(cmd_vel_msg)
+                rospy.sleep(1.0)
 
             elif distance_cm <= minDistance:
                 choice = random.choice(number)

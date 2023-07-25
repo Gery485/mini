@@ -19,7 +19,7 @@ sleep = 0.5
 sleep1 = 1
 
 #distances in cm
-minDistance = 60
+minDistance = 100
 
 number = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.3, 1.4, 1.5]
 
@@ -88,6 +88,16 @@ def main():
         distance = calculate_distance_to_obstacle(depth_image, camera_info)
         if distance is not None:
             distance_cm = distance / 10  # Convert distance to centimeters
+            if distance_cm <= minDistance:
+             choice = random.choice(number)
+             cmd_vel_msg.linear.x = zero
+             cmd_vel_msg.angular.z = zero
+             cmd_vel_pub.publish(cmd_vel_msg)
+             rospy.sleep(choice)
+             cmd_vel_msg.linear.x = zero
+             cmd_vel_msg.angular.z = turn
+             cmd_vel_pub.publish(cmd_vel_msg)
+             rospy.sleep(choice)
             print(f"Distance to obstacle: {distance_cm:.2f} cm")
 
 

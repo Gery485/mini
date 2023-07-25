@@ -106,32 +106,66 @@ def main():
         if distance is not None:
             distance_cm = distance / 10  # Convert distance to centimeters
             if distance_cm <= minDistance:
-                # ... (previous code remains unchanged)
-
+             choice = random.choice(number)
+             cmd_vel_msg.linear.x = zero
+             cmd_vel_msg.angular.z = zero
+             cmd_vel_pub.publish(cmd_vel_msg)
+             rospy.sleep(choice)
+             cmd_vel_msg.linear.x = zero
+             cmd_vel_msg.angular.z = turn
+             cmd_vel_pub.publish(cmd_vel_msg)
+             rospy.sleep(choice)
             print(f"Distance to obstacle: {distance_cm:.2f} cm")
 
-            # Check for the specific WARN message "Registration failed"
-            try:
-                log_messages = rospy.get_published_topics('/rosout')[1]
-            except Exception as e:
-                log_messages = []  # Set an empty list if there was an error getting topics
 
-            has_warn_message = check_warn_messages(log_messages, "Registration failed")
+            if distance_cm <= minDistance:
+                    choice = random.choice(number)
+                    cmd_vel_msg.linear.x = zero
+                    cmd_vel_msg.angular.z = zero
+                    cmd_vel_pub.publish(cmd_vel_msg)
+                    rospy.sleep(choice)
+                    cmd_vel_msg.linear.x = zero
+                    cmd_vel_msg.angular.z = turn
+                    cmd_vel_pub.publish(cmd_vel_msg)
+                    rospy.sleep(choice)
+            else:
+                    cmd_vel_msg.linear.x = zero
+                    cmd_vel_msg.angular.z = turn
+                    rospy.sleep(sleep)
+                    cmd_vel_msg.linear.x = zero
+                    cmd_vel_msg.angular.z = turn
+                    
+                    cmd_vel_msg.linear.x = move
+                    cmd_vel_msg.angular.z = zero
+                    cmd_vel_pub.publish(cmd_vel_msg)
+                    rospy.sleep(sleep)
 
-            if has_warn_message and not registration_failed:
-                print("WARN message: Registration failed!")
-                # Turn the robot slowly when there is a WARN message
-                turn_slowly()
-                registration_failed = True
+                    cmd_vel_msg.linear.x = zero
+                    cmd_vel_msg.angular.z = turn
+                    cmd_vel_pub.publish(cmd_vel_msg)
+                    rospy.sleep(sleep1)
 
-            # Check if there are no more warning messages
-            if not has_warn_message and registration_failed:
-                print("No more WARN message: Registration succeeded!")
-                registration_failed = False  # Reset the flag
+                    cmd_vel_msg.linear.x = zero
+                    cmd_vel_msg.angular.z = turn * -1
+                    cmd_vel_pub.publish(cmd_vel_msg)
+                    rospy.sleep(sleep1)
 
-            # ... (previous code remains unchanged)
+                    cmd_vel_msg.linear.x = zero
+                    cmd_vel_msg.angular.z = turn * -1
+                    cmd_vel_pub.publish(cmd_vel_msg)
+                    rospy.sleep(sleep1)
+
+                    cmd_vel_msg.linear.x = zero
+                    cmd_vel_msg.angular.z = turn
+                    cmd_vel_pub.publish(cmd_vel_msg)
+                    rospy.sleep(sleep1)
         else:
-            # ... (previous code remains unchanged)
+            print("Unable to calculate the distance to the obstacle.")
+            cmd_vel_msg.linear.x = zero
+            cmd_vel_msg.angular.z = turn
+            cmd_vel_pub.publish(cmd_vel_msg)
+            rospy.sleep(sleep)
+            continue
 
         rate.sleep()
 

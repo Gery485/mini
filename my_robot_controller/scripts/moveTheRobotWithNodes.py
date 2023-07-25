@@ -5,6 +5,7 @@ import rospy
 from geometry_msgs.msg import Twist
 from sensor_msgs.msg import Image, CameraInfo
 from cv_bridge import CvBridge
+from std_msgs.msg import Bool
 import cv2
 import random
 import time
@@ -88,30 +89,26 @@ def main():
         distance = calculate_distance_to_obstacle(depth_image, camera_info)
         if distance is not None:
             distance_cm = distance / 10  # Convert distance to centimeters
-            if distance_cm <= minDistance:
-             choice = random.choice(number)
-             cmd_vel_msg.linear.x = zero
-             cmd_vel_msg.angular.z = zero
-             cmd_vel_pub.publish(cmd_vel_msg)
-             rospy.sleep(choice)
-             cmd_vel_msg.linear.x = zero
-             cmd_vel_msg.angular.z = turn
-             cmd_vel_pub.publish(cmd_vel_msg)
-             rospy.sleep(choice)
             print(f"Distance to obstacle: {distance_cm:.2f} cm")
 
+            failure = rospy.Subscriber("minibot/rtabmap/odom_info", Bool, queue_size=10)
 
-            if distance_cm <= minDistance:
-                    choice = random.choice(number)
-                    cmd_vel_msg.linear.x = zero
-                    cmd_vel_msg.angular.z = zero
-                    cmd_vel_pub.publish(cmd_vel_msg)
-                    rospy.sleep(choice)
-                    cmd_vel_msg.linear.x = zero
-                    cmd_vel_msg.angular.z = turn
-                    cmd_vel_pub.publish(cmd_vel_msg)
-                    rospy.sleep(choice)
-            else:
+            if failure == True:
+                cmd_vel_msg.linear.x = zero
+                cmd_vel_msg.angular.z = turn
+
+                if distance_cm <= minDistance:
+                     choice = random.choice(number)
+                     cmd_vel_msg.linear.x = zero
+                     cmd_vel_msg.angular.z = zero
+                     cmd_vel_pub.publish(cmd_vel_msg)
+                     rospy.sleep(choice)
+                     cmd_vel_msg.linear.x = zero
+                     cmd_vel_msg.angular.z = turn
+                     cmd_vel_pub.publish(cmd_vel_msg)
+                     rospy.sleep(choice)
+
+                else:
                     cmd_vel_msg.linear.x = zero
                     cmd_vel_msg.angular.z = turn
                     rospy.sleep(sleep)

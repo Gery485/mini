@@ -4,7 +4,7 @@ import rospy
 from geometry_msgs.msg import Twist
 from sensor_msgs.msg import Image, CameraInfo
 from cv_bridge import CvBridge
-from nav_msgs.msg import OdomInfo
+from rtabmap_msgs.msg import OdomInfo
 import cv2
 import random
 import time
@@ -27,7 +27,7 @@ number = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.3, 1.4, 1.
 
 # Definitions for the publisher
 rospy.init_node('msgsForMoving')
-cmd_vel_pub = rospy.Publisher('/minibot/rvr/cmd_vel', Twist, queue_size=1)
+cmd_vel_pub = rospy.Publisher('/minibot/rvr/cmd_vel', Twist, queue_size = 1)
 cmd_vel_msg = Twist()
 bridge = CvBridge()
 depth_image = None

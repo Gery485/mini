@@ -12,10 +12,10 @@ import time
 #moving
 zero = 0
 move = 0.3
-turn = 1
+turn = 2
 
 #waiting
-sleep = 0.1
+sleep = 0.4
 sleep1 = 2
 
 #distances in cm
@@ -88,6 +88,7 @@ def main():
         if distance is not None:
             distance_cm = distance / 10  # Convert distance to centimeters
             print(f"Distance to obstacle: {distance_cm:.2f} cm")
+
 
             if distance_cm <= minDistance:
                     cmd_vel_msg.linear.x = zero

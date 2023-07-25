@@ -84,6 +84,7 @@ def odom_info_callback(msg):
 def main():
     global depth_image, camera_info, failure
 
+    failure = False
     # Subscriber for depth image, camera info, and odom_info
     rospy.Subscriber('/minibot/camera/depth/image_rect_raw', Image, depth_image_callback)
     rospy.Subscriber('/minibot/camera/depth/camera_info', CameraInfo, camera_info_callback)
@@ -102,12 +103,12 @@ def main():
             distance_cm = distance / 10  # Convert distance to centimeters
             print(f"Distance to obstacle: {distance_cm:.2f} cm")
 
-            if failure:
+            if failure == True:
                 failure = False
                 cmd_vel_msg.linear.x = zero
                 cmd_vel_msg.angular.z = turn
 
-            if distance_cm <= minDistance:
+            elif distance_cm <= minDistance:
                 choice = random.choice(number)
                 cmd_vel_msg.linear.x = zero
                 cmd_vel_msg.angular.z = zero

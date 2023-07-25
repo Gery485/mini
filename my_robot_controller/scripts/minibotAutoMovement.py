@@ -115,8 +115,19 @@ def main():
             print(f"Distance to obstacle: {distance_cm:.2f} cm")
 
             # Check for the specific WARN message "Registration failed"
-            log_messages = rospy.get_published_topics('/rosout')
-            has_warn_message = check_warn_messages(log_messages, "Registration failed")
+            log_topics, _ = rospy.get_published_topics('/rosout')  # Get the list of topic names
+            has_warn_message = check_warn_messages(log_topics, "Registration failed")
+
+            if has_warn_message and not registration_failed:
+                print("WARN message: Registration failed!")
+                # Turn the robot slowly when there is a WARN message
+                turn_slowly()
+                registration_failed = True
+
+            # Check if there are no more warning messages
+            if not has_warn_message and registration_failed:
+                print("No more WARN message: Registration succeeded!")
+                registration_failed = False  # Reset the flag
 
             if has_warn_message:
                 print("WARN message: Registration failed!")

@@ -5,15 +5,14 @@ import rospy
 from geometry_msgs.msg import Twist
 from sensor_msgs.msg import Image, CameraInfo
 from cv_bridge import CvBridge
-from std_msgs.msg import Bool
 import cv2
 import random
 import time
 
 #moving
 zero = 0
-move = 0.3
-turn = 1.5
+move = 0.2
+turn = 1
 
 #waiting
 sleep = 0.5
